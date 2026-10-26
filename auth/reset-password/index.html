@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Reset Password | Home in Order</title>
+  <link rel="icon" href="../../logo.png">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <!-- Supabase sends password reset links here. On Android with the app
+       installed, App Links open the app instead (see /.well-known/assetlinks.json).
+       The reset can only finish in the app on the phone that requested it: the
+       one-time code is paired with a secret stored there. -->
+  <header>
+    <a href="../../"><img src="../../logo.png" alt="">Home in Order</a>
+  </header>
+
+  <main>
+    <div id="open-on-phone">
+      <h1>Finish resetting on your phone</h1>
+      <p>For your security, a password reset can only be completed in the Home in Order app, on the phone where you requested it.</p>
+      <p>On that phone, open this email again and tap the link, or tap the button below.</p>
+    </div>
+    <div id="expired" hidden>
+      <h1>This link has expired</h1>
+      <p>This reset link has expired or was already used. In the app, tap <strong>Forgot Password?</strong> on the sign-in screen to get a new one.</p>
+    </div>
+    <p id="open-app"><a id="open-app-link" class="card" style="display:inline-block; text-decoration:none; font-weight:700" href="homeinorder://reset-password">Open the app</a></p>
+    <p class="updated">Need help? Email <a href="mailto:support@homeinorder.org">support@homeinorder.org</a>.</p>
+  </main>
+
+  <script>
+    var params = new URLSearchParams(location.search + "&" + location.hash.slice(1));
+    if (params.get("error")) {
+      document.getElementById("open-on-phone").hidden = true;
+      document.getElementById("open-app").hidden = true;
+      document.getElementById("expired").hidden = false;
+    } else if (params.get("code")) {
+      // Pass the one-time code on to the app on this phone.
+      document.getElementById("open-app-link").href =
+        "homeinorder://reset-password?code=" + encodeURIComponent(params.get("code"));
+    }
+  </script>
+</body>
+</html>

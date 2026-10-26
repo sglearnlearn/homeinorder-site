@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.homeinorder.app",
+      "sha256_cert_fingerprints": [
+        "78:17:4D:96:35:37:AF:E7:78:7F:78:2A:F9:D5:2D:75:61:74:E8:2C:9A:A6:CF:B2:4F:48:F0:44:81:1B:E2:20"
+      ]
+    }
+  }
+]

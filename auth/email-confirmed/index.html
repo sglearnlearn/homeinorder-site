@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Email Confirmation | Home in Order</title>
+  <link rel="icon" href="../../logo.png">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <!-- Supabase sends signup confirmation links here. On Android with the app
+       installed, App Links open the app instead (see /.well-known/assetlinks.json);
+       this page is for computers, phones without the app, and in-app browsers. -->
+  <header>
+    <a href="../../"><img src="../../logo.png" alt="">Home in Order</a>
+  </header>
+
+  <main>
+    <div id="confirmed">
+      <h1>Your email is confirmed</h1>
+      <p>You can now sign in. Open Home in Order on your phone and sign in with your email and password.</p>
+    </div>
+    <div id="expired" hidden>
+      <h1>This link has expired</h1>
+      <p>This confirmation link has expired or was already used. Try signing in to Home in Order. If that doesn't work, sign up again to get a new link.</p>
+    </div>
+    <p><a class="card" style="display:inline-block; text-decoration:none; font-weight:700" href="homeinorder://email-confirmed">Open the app</a></p>
+    <p class="updated">Need help? Email <a href="mailto:support@homeinorder.org">support@homeinorder.org</a>.</p>
+  </main>
+
+  <script>
+    var params = new URLSearchParams(location.search + "&" + location.hash.slice(1));
+    if (params.get("error")) {
+      document.getElementById("confirmed").hidden = true;
+      document.getElementById("expired").hidden = false;
+    }
+  </script>
+</body>
+</html>
