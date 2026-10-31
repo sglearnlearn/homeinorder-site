@@ -12,35 +12,47 @@
   <!-- Supabase sends password reset links here. On Android with the app
        installed, App Links open the app instead (see /.well-known/assetlinks.json).
        The reset can only finish in the app on the phone that requested it: the
-       one-time code is paired with a secret stored there. -->
+       one-time code is paired with a secret stored there. Opening the email
+       link anywhere uses it up, so on a computer the only way forward is a new
+       link requested on the phone. -->
   <header>
     <a href="../../"><img src="../../logo.png" alt="">Home in Order</a>
   </header>
 
   <main>
-    <div id="open-on-phone">
-      <h1>Finish resetting on your phone</h1>
-      <p>For your security, a password reset can only be completed in the Home in Order app, on the phone where you requested it.</p>
-      <p>On that phone, open this email again and tap the link, or tap the button below.</p>
+    <div id="on-phone" hidden>
+      <h1>Finish resetting in the app</h1>
+      <p>If Home in Order didn't open, tap the button below. This only works on the phone where you requested the reset.</p>
+    </div>
+    <div id="on-computer">
+      <h1>This link has been used</h1>
+      <p>For your security, a password reset can only be finished in the Home in Order app, on the phone where you requested it. Opening the link here has used it up.</p>
+      <p>On your phone, open Home in Order, tap <strong>Forgot Password?</strong> to get a new link, and open that email on your phone.</p>
     </div>
     <div id="expired" hidden>
       <h1>This link has expired</h1>
       <p>This reset link has expired or was already used. In the app, tap <strong>Forgot Password?</strong> on the sign-in screen to get a new one.</p>
     </div>
-    <p id="open-app"><a id="open-app-link" class="card" style="display:inline-block; text-decoration:none; font-weight:700" href="homeinorder://reset-password">Open the app</a></p>
+    <p id="open-app" hidden><a id="open-app-link" class="card" style="display:inline-block; text-decoration:none; font-weight:700" href="homeinorder://reset-password">Open the app</a></p>
     <p class="updated">Need help? Email <a href="mailto:support@homeinorder.org">support@homeinorder.org</a>.</p>
   </main>
 
   <script>
     var params = new URLSearchParams(location.search + "&" + location.hash.slice(1));
+    var isPhone = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     if (params.get("error")) {
-      document.getElementById("open-on-phone").hidden = true;
-      document.getElementById("open-app").hidden = true;
+      document.getElementById("on-computer").hidden = true;
       document.getElementById("expired").hidden = false;
-    } else if (params.get("code")) {
-      // Pass the one-time code on to the app on this phone.
-      document.getElementById("open-app-link").href =
-        "homeinorder://reset-password?code=" + encodeURIComponent(params.get("code"));
+    } else if (isPhone) {
+      // Likely an email app's built-in browser that didn't hand the link to
+      // the app: pass the one-time code on to the app on this phone.
+      document.getElementById("on-computer").hidden = true;
+      document.getElementById("on-phone").hidden = false;
+      document.getElementById("open-app").hidden = false;
+      if (params.get("code")) {
+        document.getElementById("open-app-link").href =
+          "homeinorder://reset-password?code=" + encodeURIComponent(params.get("code"));
+      }
     }
   </script>
 </body>
